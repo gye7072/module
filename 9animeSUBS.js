@@ -136,7 +136,7 @@ async function searchResults(keyword) {
  */
 async function extractDetails(url) {
     //(?![</p>])    --- negative lookahead is not captured
-    const REGEX = /film-name dynamic-name[\s\S]*?data-jname=['"]([\s\S]*?)['"][\s\S]*?shorting[\s\S]*?>(?![</p>])([\s\S]*?)<\/p>[\s\S]*?Premiered:[\s\S]*?<span>([\s\S]*?)</;
+    const REGEX = /film-name dynamic-name[\s\S]*?data-jname=['"]([\s\S]*?)['"][\s\S]*?shorting[\s\S]*?>(?![</p>])([\s\S]*?)<\/p>[\s\S]*?Date aired:[\s\S]*?<span>([\s\S]*?)</;
     try {
         const response = await soraFetch(url);
 
