@@ -1,49 +1,57 @@
+//git init
+//git remote add origin https://github.com/gye7072/module
+//git commit -m "Your commit message"
+//git push -u origin main
+//git push for later pushes
+
+
+// This is an example module for people learning how to create their own modules for Sora/Sulfur
 // const CryptoJS = require("crypto-js");
 //npm install crypto-js
 const BASE_URL = "https://9animetv.to";
 const SEARCH_URL = "https://9animetv.to/search?keyword=";
 
-// async function fetchv2(url, headers = {}, method = "GET", body = null, redirect = true, encoding = "utf-8") {
-//     const processedBody = (method !== "GET" && body && typeof body === 'object') 
-//         ? JSON.stringify(body)
-//         : (method !== "GET" ? body : null);
+async function fetchv2(url, headers = {}, method = "GET", body = null, redirect = true, encoding = "utf-8") {
+    const processedBody = (method !== "GET" && body && typeof body === 'object') 
+        ? JSON.stringify(body)
+        : (method !== "GET" ? body : null);
 
-//     const options = {
-//         method,
-//         headers,
-//         body: processedBody,
-//         redirect: redirect ? 'follow' : 'manual',
-//     };
+    const options = {
+        method,
+        headers,
+        body: processedBody,
+        redirect: redirect ? 'follow' : 'manual',
+    };
 
-//     try {
-//         const response = await fetch(url, options);
+    try {
+        const response = await fetch(url, options);
 
-//         const rawBuffer = await response.arrayBuffer();
-//         const decoder = new TextDecoder(encoding || "utf-8");
-//         const decodedText = decoder.decode(rawBuffer);
+        const rawBuffer = await response.arrayBuffer();
+        const decoder = new TextDecoder(encoding || "utf-8");
+        const decodedText = decoder.decode(rawBuffer);
 
-//         const result = {
-//             headers: Object.fromEntries(response.headers.entries()),
-//             status: response.status,
-//             _data: decodedText,
-//             text: function () {
-//                 return Promise.resolve(this._data);
-//             },
-//             json: function () {
-//                 try {
-//                     return Promise.resolve(JSON.parse(this._data));
-//                 } catch (e) {
-//                     return Promise.reject("JSON parse error: " + e.message);
-//                 }
-//             }
-//         };
+        const result = {
+            headers: Object.fromEntries(response.headers.entries()),
+            status: response.status,
+            _data: decodedText,
+            text: function () {
+                return Promise.resolve(this._data);
+            },
+            json: function () {
+                try {
+                    return Promise.resolve(JSON.parse(this._data));
+                } catch (e) {
+                    return Promise.reject("JSON parse error: " + e.message);
+                }
+            }
+        };
 
-//         return result;
+        return result;
 
-//     } catch (err) {
-//         return Promise.reject(err.message || "Unknown error");
-//     }
-// }
+    } catch (err) {
+        return Promise.reject(err.message || "Unknown error");
+    }
+}
 
 
 // // ***** LOCAL TESTING
@@ -367,7 +375,7 @@ async function extractEpisodes(url) {
 
 
 
-async function extractStreamUrl(id) {if (_0xCheck()) {   
+async function extractStreamUrl(id) {   
 		try {
 			const url = 'https://9animetv.to/ajax/episode/servers?episodeId=' + id;
             console.log(url);
@@ -452,10 +460,8 @@ async function extractStreamUrl(id) {if (_0xCheck()) {
 				subtitles: ""
 			};
 		}
+        return 'https://files.catbox.moe/avolvc.mp4';
 	}
-	return 'https://files.catbox.moe/avolvc.mp4';
-
-}
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////       Helper Functions      ////////////////////////////
@@ -572,7 +578,7 @@ async function getStreamSource(sourceId, key, isSub) {
 
 function decryptStream(encrypted, key) {
 	try {
-		const decrypted = CryptoJS.AES.decrypt(encrypted, key);
+		const decrypted = CryptoJS.AES.decrypt(encrypted, key); 
 		const plain = decrypted.toString(CryptoJS.enc.Utf8);
 		console.log("Decrypted sources:" + plain);
 		return JSON.parse(plain);
