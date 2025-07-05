@@ -474,7 +474,7 @@ async function getWorkingKey(testIds) {
 	}
 
 	try {
-		const res2 = await fetchv2('https://raw.githubusercontent.com/itzzzme/megacloud-keys/refs/heads/main/key.txt');
+		const res2 = await fetchv2('https://raw.githubusercontent.com/itzzzme/megacloud-keys/refs/heads/main/rabbit.txt');
 		const key2 = await res2.text();
 		const cleanKey2 = key2.trim();
 		const test2 = await getStreamSource(testIds[0], cleanKey2);
@@ -495,6 +495,7 @@ async function getWorkingKey(testIds) {
 		console.log("Key 3 failed");
 	}
 
+
 	try {
 		const res4 = await fetchv2('https://raw.githubusercontent.com/SpencerDevs/megacloud-key-updater/refs/heads/master/key.txt');
 		const key4 = await res4.text();
@@ -506,7 +507,21 @@ async function getWorkingKey(testIds) {
 		console.log("Key 4 failed");
 	}
 
+	try {
+		const res5 = await fetchv2('https://raw.githubusercontent.com/JustArion/keys/refs/heads/master/e1-player/src/data/keys.json');
+		const json5 = await res5.json();
+		const key5 = json5.cloudvidz.anime.key;
+		console.log(key5);
+		const test5 = await getStreamSource(testIds[0], key5);
+		console.log("Testing key 5:"+ key5);
+		if (test5 && test5.sources) return key5;
+	} catch (e) {
+		console.log("Key 5 failed");
+	}
+
+
 	return null;
+	
 }
 
 async function getStreamSource(sourceId, key, isSub) {
