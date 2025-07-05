@@ -4,17 +4,15 @@
     "author": {
         "name": "red",
         "icon": "https://raw.githubusercontent.com/gye7072/module/refs/heads/main/red.png",
-        "url": "https://github.com/gye7072/module"
     },
-    "version": "1.1.0",
+    "version": "1.0.0",
     "language": "English (SUB)",
-    "streamType": "MP4",
-    "quality": "720p",
-	"type": "anime",
+    "streamType": "HLS",
+    "quality": "1080p",
     "baseUrl": "https://9animetv.to",
-    "searchBaseUrl": "https://9animetv.to/search?keyword=",
+    "searchBaseUrl": "https://9animetv.to/search?keyword=%s",
     "scriptUrl": "https://raw.githubusercontent.com/gye7072/module/refs/heads/main/9animeSUBS.js",
     "asyncJS": true,
-    "streamAsyncJS": true,
-    "softsub": false
+    "softsub": true,
+    "type": "anime"
  }
