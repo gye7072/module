@@ -8,50 +8,50 @@
 // This is an example module for people learning how to create their own modules for Sora/Sulfur
 // const CryptoJS = require("crypto-js");
 //npm install crypto-js
-const BASE_URL = "https://9animetv.to";
-const SEARCH_URL = "https://9animetv.to/search?keyword=";
+// const BASE_URL = "https://9animetv.to";
+// const SEARCH_URL = "https://9animetv.to/search?keyword=";
 
-async function fetchv2(url, headers = {}, method = "GET", body = null, redirect = true, encoding = "utf-8") {
-    const processedBody = (method !== "GET" && body && typeof body === 'object') 
-        ? JSON.stringify(body)
-        : (method !== "GET" ? body : null);
+// async function fetchv2(url, headers = {}, method = "GET", body = null, redirect = true, encoding = "utf-8") {
+//     const processedBody = (method !== "GET" && body && typeof body === 'object') 
+//         ? JSON.stringify(body)
+//         : (method !== "GET" ? body : null);
 
-    const options = {
-        method,
-        headers,
-        body: processedBody,
-        redirect: redirect ? 'follow' : 'manual',
-    };
+//     const options = {
+//         method,
+//         headers,
+//         body: processedBody,
+//         redirect: redirect ? 'follow' : 'manual',
+//     };
 
-    try {
-        const response = await fetch(url, options);
+//     try {
+//         const response = await fetch(url, options);
 
-        const rawBuffer = await response.arrayBuffer();
-        const decoder = new TextDecoder(encoding || "utf-8");
-        const decodedText = decoder.decode(rawBuffer);
+//         const rawBuffer = await response.arrayBuffer();
+//         const decoder = new TextDecoder(encoding || "utf-8");
+//         const decodedText = decoder.decode(rawBuffer);
 
-        const result = {
-            headers: Object.fromEntries(response.headers.entries()),
-            status: response.status,
-            _data: decodedText,
-            text: function () {
-                return Promise.resolve(this._data);
-            },
-            json: function () {
-                try {
-                    return Promise.resolve(JSON.parse(this._data));
-                } catch (e) {
-                    return Promise.reject("JSON parse error: " + e.message);
-                }
-            }
-        };
+//         const result = {
+//             headers: Object.fromEntries(response.headers.entries()),
+//             status: response.status,
+//             _data: decodedText,
+//             text: function () {
+//                 return Promise.resolve(this._data);
+//             },
+//             json: function () {
+//                 try {
+//                     return Promise.resolve(JSON.parse(this._data));
+//                 } catch (e) {
+//                     return Promise.reject("JSON parse error: " + e.message);
+//                 }
+//             }
+//         };
 
-        return result;
+//         return result;
 
-    } catch (err) {
-        return Promise.reject(err.message || "Unknown error");
-    }
-}
+//     } catch (err) {
+//         return Promise.reject(err.message || "Unknown error");
+//     }
+// }
 
 
 // // ***** LOCAL TESTING
@@ -238,144 +238,7 @@ async function extractEpisodes(url) {
 //DouVideo SUBS: https://rapid-cloud.co/embed-2/v2/e-1/getSources?id=bfSOqhglXsJ2
 
 
-
-// async function extractStreamUrl(url) {
-//     //url = https://9animetv.to/watch/erased-151?ep=4033
-//     try {
-//         const match = url.match(/https:\/\/9animetv\.to\/watch\/[\s\S]*?=(.+)$/); 
-//         const encodedID = match[1];
-//         // console.log(encodedID); //4033
-//         const response = await fetch(`https://9animetv.to/ajax/episode/servers?episodeId=${encodedID}`);
-//         const data = await response.json();
-        
-//         //Getting the Servers
-//         const serverHTML = []
-//         let episodeNum = 0;
-//         const episodeRegex =/<div class="item server-item"[^>]*data-id="(\d+)"[^>]*>[\s\S]*?<a[^>]*>([^<]+)<\/a>/g;
-//         let matchResult;
-//         while ((matchResult = episodeRegex.exec(data.html)) !== null) {
-//             const data_id = matchResult[1];
-//             const server_name = matchResult[2];
-//             serverHTML[episodeNum] = {
-//                 'data_id': `${BASE_URL}/ajax/episode/sources?id=${data_id}`,
-//                 'server_name': server_name,
-//             }
-//             episodeNum += 1;
-//         }
-
-//         //Getting the links
-//         const response2 = await fetch(serverHTML[0].data_id)
-//         const data2 = await response2.json()
-        
-//         const hlsSource = data2.sources;
-//         // console.log(hlsSource)
-//         const subtitleTrack = data2.tracks;
-        
-//         const result = {
-//                 stream: hlsSource ? hlsSource.url : null,         
-//                 //stream links must be .m3u8
-//                 subtitles: subtitleTrack ? subtitleTrack.file : null
-//                 //subtitle links must be .vtt or .srt
-//         }
-//         console.log(result);
-//         return JSON.stringify(result);
-//         } catch (error) {
-//             console.log('Fetch error:', error);
-//             return JSON.stringify({ stream: null, subtitles: null });
-//         }
-// }
-
-
-// async function extractStreamUrl(url) {
-//     //url = https://9animetv.to/watch/erased-151?ep=4033
-//     try {
-//         const match = url.match(/https:\/\/9animetv\.to\/watch\/[\s\S]*?=(.+)$/); //erased-151
-//         const encodedID = match[1];
-//         const response = await fetch(`https://rapid-cloud.co/embed-2/v2/e-1/getSources?id=9MDrXCgMz3rO`);
-//         const data = await response.json();
-        
-//         const hlsSource = data.sources.find(source => source.type === 'hls');
-//         console.log(hlsSource)
-//         const subtitleTrack = data.tracks.find(track => track.label === 'English' && track.kind === 'captions');
-        
-//         const result = {
-//                 stream: hlsSource ? hlsSource.url : null,
-//                 subtitles: subtitleTrack ? subtitleTrack.file : null
-//         }
-//         console.log(result);
-//         return JSON.stringify(result);
-//     } catch (error) {
-//         console.log('Fetch error:', error);
-//         return JSON.stringify({ stream: null, subtitles: null });
-//     }
-// }
-
-
-// async function extractStreamUrl(id) {if (_0xCheck()) {   
-// 		try {
-// 			const url = 'https://hianime.to/ajax/v2/episode/servers?episodeId=' + id;
-// 			const response = await fetchv2(url);
-// 			const data = await response.json();
-// 			const html = data.html;
-
-// 			const subMatch = html.match(/<div class="item server-item"[^>]*data-type="sub"[^>]*data-id="(\d+)"[^>]*>[\s\S]*?<a[^>]*>\s*HD-1\s*<\/a>/);
-// 			const dubMatch = html.match(/<div class="item server-item"[^>]*data-type="dub"[^>]*data-id="(\d+)"[^>]*>[\s\S]*?<a[^>]*>\s*HD-1\s*<\/a>/);
-
-// 			const subId = subMatch ? subMatch[1] : null;
-// 			const dubId = dubMatch ? dubMatch[1] : null;
-
-// 			if (!subId && !dubId) throw new Error("No subId or dubId found");
-
-// 			const key = await getWorkingKey([subId || dubId]);
-// 			if (!key) throw new Error("No working decryption key found");
-
-// 			let streams = [];
-// 			let subtitles = "";
-
-// 			if (dubId) {
-// 				const dubSources = await getStreamSource(dubId, key, false);
-// 				const dubStream = dubSources?.sources?.find(function (source) {
-// 					return source.type === "hls";
-// 				});
-// 				if (dubStream?.file) {
-// 					streams.push("DUB", dubStream.file);
-// 				}
-// 			}
-
-// 			if (subId) {
-// 				const subSources = await getStreamSource(subId, key, true);
-// 				const subStream = subSources?.sources?.find(function (source) {
-// 					return source.type === "hls";
-// 				});
-// 				if (subStream?.file) {
-// 					streams.push("SUB", subStream.file);
-// 				}
-// 				if (subSources?.subtitles) {
-// 					subtitles = subSources.subtitles;
-// 				}
-// 			}
-
-// 			const final = {
-// 				streams: streams,
-// 				subtitles: subtitles
-// 			};
-
-// 			console.log("RETURN:" + JSON.stringify(final));
-// 			return JSON.stringify(final);
-
-// 		} catch (error) {
-// 			console.log("Error in extractStreamUrl:", error);
-// 			return {
-// 				streams: [],
-// 				subtitles: ""
-// 			};
-// 		}
-// 	}return 'https://files.catbox.moe/avolvc.mp4';
-// }
-
-
-
-async function extractStreamUrl(id) {   
+async function extractStreamUrl(id) {if (_0xCheck()) {   
 		try {
 			const url = 'https://9animetv.to/ajax/episode/servers?episodeId=' + id;
             console.log(url);
@@ -460,8 +323,8 @@ async function extractStreamUrl(id) {
 				subtitles: ""
 			};
 		}
-        return 'https://files.catbox.moe/avolvc.mp4';
-	}
+	}return 'https://files.catbox.moe/avolvc.mp4';
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////       Helper Functions      ////////////////////////////
@@ -491,40 +354,47 @@ async function getWorkingKey(testIds) {
 	}
 
 	try {
-		const res3 = await fetchv2('https://raw.githubusercontent.com/yogesh-hacker/MegacloudKeys/refs/heads/main/keys.json');
+		const res3 = await fetchv2('https://justarion.github.io/keys/e1-player/src/data/keys.json');
 		const json3 = await res3.json();
-		const key3 = json3.mega;
+		const key3 = json3.megacloud.anime.key;
 		const test3 = await getStreamSource(testIds[0], key3);
-		console.log("Testing key 3:"+ key3);
+		console.log("Testing key 3:" + key3);
 		if (test3 && test3.sources) return key3;
 	} catch (e) {
 		console.log("Key 3 failed");
 	}
 
-
 	try {
-		const res4 = await fetchv2('https://raw.githubusercontent.com/SpencerDevs/megacloud-key-updater/refs/heads/master/key.txt');
-		const key4 = await res4.text();
-		const cleanKey4 = key4.trim();
-		const test4 = await getStreamSource(testIds[0], cleanKey4);
-		console.log("Testing key 4:"+ cleanKey4);
-		if (test4 && test4.sources) return cleanKey4;
+		const res4 = await fetchv2('https://raw.githubusercontent.com/yogesh-hacker/MegacloudKeys/refs/heads/main/keys.json');
+		const key4 = (await res4.json()).mega;
+		const test4 = await getStreamSource(testIds[0], key4);
+		console.log("Testing key 4:" + key4);
+		if (test4 && test4.sources) return key4;
 	} catch (e) {
 		console.log("Key 4 failed");
 	}
 
 	try {
-		const res5 = await fetchv2('https://raw.githubusercontent.com/JustArion/keys/refs/heads/master/e1-player/src/data/keys.json');
-		const json5 = await res5.json();
-		const key5 = json5.cloudvidz.anime.key;
-		console.log(key5);
+		const res5 = await fetchv2('https://raw.githubusercontent.com/SpencerDevs/megacloud-key-updater/refs/heads/master/key.txt');
+		const key5 = (await res5.text()).trim();
 		const test5 = await getStreamSource(testIds[0], key5);
-		console.log("Testing key 5:"+ key5);
+		console.log("Testing key 5:" + key5);
 		if (test5 && test5.sources) return key5;
 	} catch (e) {
 		console.log("Key 5 failed");
 	}
 
+	try {
+		const res6 = await fetchv2('https://raw.githubusercontent.com/JustArion/keys/refs/heads/master/e1-player/src/data/keys.json');
+		const json6 = await res6.json();
+		const key6 = json6.cloudvidz.anime.key;
+		console.log(key6);
+		const test6 = await getStreamSource(testIds[0], key6);
+		console.log("Testing key 6:"+ key6);
+		if (test6 && test6.sources) return key6;
+	} catch (e) {
+		console.log("Key 6 failed");
+	}
 
 	return null;
 	
@@ -6794,19 +6664,3 @@ function _0xCheck() {
 }
 
 function _0x7E9A(_){return((___,____,_____,______,_______,________,_________,__________,___________,____________)=>(____=typeof ___,_____=___&&___[String.fromCharCode(...[108,101,110,103,116,104])],______=[...String.fromCharCode(...[99,114,97,110,99,105])],_______=___?[...___[String.fromCharCode(...[116,111,76,111,119,101,114,67,97,115,101])]()]:[],(________=______[String.fromCharCode(...[115,108,105,99,101])]())&&_______[String.fromCharCode(...[102,111,114,69,97,99,104])]((_________,__________)=>(___________=________[String.fromCharCode(...[105,110,100,101,120,79,102])](_________))>=0&&________[String.fromCharCode(...[115,112,108,105,99,101])](___________,1)),____===String.fromCharCode(...[115,116,114,105,110,103])&&_____===16&&________[String.fromCharCode(...[108,101,110,103,116,104])]===0))(_)}
-
-
-
-// tries to use custom fetchv2 else it falls back to fetch
-async function soraFetch(url, options = { headers: {}, method: 'GET', body: null }) {
-    try {
-        return await fetchv2(url, options.headers ?? {}, options.method ?? 'GET', options.body ?? null);
-    } catch(e) {
-        try {
-            return await fetch(url, options);
-        } catch(error) {
-            return null;
-        }
-    }
-}
-
